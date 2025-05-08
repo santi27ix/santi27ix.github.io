@@ -107,8 +107,6 @@ div.a
     margin: auto;
     height: 100vh;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
 }
 div.contenedor
 {
@@ -153,7 +151,7 @@ justify-content: end;
 }
 div.linealta
 {
-line-height: 1.2;
+line-height: 0.8;
 }
 p.textopequeño2
 {
