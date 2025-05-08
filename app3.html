@@ -34,8 +34,8 @@ margin: 0 auto;
         h: 50,
         imagen: new Image()
     };
- 
-        let existe_bala = false;
+ let bala = null;
+let existe_bala = false;
 
     diana.imagen.src ='images/diana.png';
 
@@ -53,18 +53,21 @@ margin: 0 auto;
 
 
   function pintarBala(){
-    if ((existe_bala) && (bala.x > canvas.width))
-    {
-        existe_bala=false;
-        ctx.fillStyle = 'black';
-        ctx.beginPath();
-        ctx.arc(bala.x,bala.y,6,0,Math.PI*2);
-        //ctx.stroke();
-        ctx.fill();
-        bala.x = bala.x + bala.velocidad;
-    }
+if(existe_bala){
+    bala.x = bala.x + bala.velocidad;
 
-  }
+    ctx.fillStyle = 'black';
+    ctx.beginPath();
+    ctx.arc(bala.x,bala.y,6,0,Math.PI*2);
+    //ctx.stroke();
+    ctx.fill();
+
+//Si nos salimos del campo que no haya bala
+if((existe_bala)&&(bala.x>canvas.width)){
+existe_bala = false;
+}
+
+  }}
 
   
 
@@ -76,18 +79,18 @@ if (e.key === 'ArrowUp')
 else if (e.key === 'ArrowDown'){
     p1.y = p1.y + p1.paso; 
 }
-else if (e.code === 'Space')
-{
-        if (!existe_bala)
-        {
-        existe_bala=true;
+else if(e.code === 'Space'){
+    //alert('dispara');
+    if(!existe_bala){
+        existe_bala = true;
         bala = {
-            x:p1.x + p1.w,
-            y:p1.y,
-            velocidad:7 
+            x: p1.x + p1.w,
+            y: p1.y,
+            velocidad: 7
         }
-        }
+    }
 }
+
   });
 
 
