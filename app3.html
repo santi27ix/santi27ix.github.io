@@ -60,7 +60,11 @@ margin: 0 auto;
     ctx.fill();
 
     bala.x = bala.x + bala.velocidad;
-
+    
+    if ((existe_bala) && (bala.x > canvas.width))
+    {
+        existe_bala=false;
+    }
 
   }
 
