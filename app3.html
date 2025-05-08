@@ -53,17 +53,15 @@ margin: 0 auto;
 
 
   function pintarBala(){
-    ctx.fillStyle = 'black';
-    ctx.beginPath();
-    ctx.arc(bala.x,bala.y,6,0,Math.PI*2);
-    //ctx.stroke();
-    ctx.fill();
-
-    bala.x = bala.x + bala.velocidad;
-    
     if ((existe_bala) && (bala.x > canvas.width))
     {
         existe_bala=false;
+        ctx.fillStyle = 'black';
+        ctx.beginPath();
+        ctx.arc(bala.x,bala.y,6,0,Math.PI*2);
+        //ctx.stroke();
+        ctx.fill();
+        bala.x = bala.x + bala.velocidad;
     }
 
   }
