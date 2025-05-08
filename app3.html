@@ -39,8 +39,7 @@
             x: 600,
             y: 350,
             w: 20,
-            h:30,
-            imagen: new Image()
+            h:30
         };
         Diana.imagen.src = "diana.png"
 
@@ -56,7 +55,9 @@
         function pintarCirculo() 
         {
             ctx.fillstyle = 'black'; 
-            ctx.fillRect(Circulo.x,Circulo.y,Circulo.w,Circulo.h);   
+            ctx.beginPath();
+            ctx.arc(p1.x,p1.y,6,0,Math,PI);
+            ctx.stroke;
         };
         diana.imagen.onload = function(){pintarDiana();};
         
