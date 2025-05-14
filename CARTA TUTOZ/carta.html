@@ -38,20 +38,59 @@
 }
 
 
-    .attributo {
-      position: absolute;
-      top: 10px;
-      left: 15px;
-      font-weight: bold;
-      font-size: 16px;
-      background: linear-gradient(90deg, #000000, #ffffff, #464646);
-    background-size: 200% auto;
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-    -webkit-text-fill-color: transparent;
-    animation: textoAnimado 4s linear infinite;
-    }
+.atributo-contenedor {
+  position: absolute;
+  top: 10px;
+  left: 15px;
+  display: flex;
+  align-items: baseline;
+  gap: 2px; 
+}
+
+.attributo {
+  font-weight: bold;
+  font-size: 16px;
+  background: linear-gradient(90deg, #000000, #ffffff, #464646);
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: textoAnimado 4s linear infinite;
+}
+
+.potenciatrib {
+  font-size: 18px;
+  margin-right: 4px;
+  position: relative;
+  font-size: 20px;
+  font-weight: bold;
+  position: relative;
+  margin-right: 4px;
+  background: linear-gradient(
+    90deg,
+    red,
+    orange,
+    yellow,
+    green,
+    cyan,
+    blue,
+    violet,
+    red
+  );
+  background-size: 300% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: arcoiris 3s linear infinite;
+}
+
+@keyframes arcoiris {
+  0% { background-position: 0% center; }
+  100% { background-position: 300% center; }
+}
+
 
     .estrellas {
       position: absolute;
@@ -150,19 +189,32 @@
       right: 15px;
       font-size: 26px;
       font-family: Arial Black;
-      background: linear-gradient(90deg, #000000, #ffffff, #464646);
-    background-size: 200% auto;
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-    -webkit-text-fill-color: transparent;
-    animation: textoAnimado 4s linear infinite;
+      background: linear-gradient(
+    90deg,
+    red,
+    orange,
+    yellow,
+    green,
+    cyan,
+    blue,
+    violet,
+    red
+  );
+  background-size: 300% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: arcoiris 3s linear infinite;
 }
   </style>
 </head>
 <body>
   <div class="carta">
-    <div class="attributo">ATRIBUTO</div>
+    <div class="atributo-contenedor">
+      <span class="attributo">ATRIBUTO</span>
+      <span class="potenciatrib">+2</span>
+    </div>    
     <div class="estrellas">
       <div class="estrella">★</div>
       <div class="estrella">★</div>
