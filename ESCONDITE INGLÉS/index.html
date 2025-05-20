@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>El Escondite Inglés Regular</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Fredoka One', cursive;
+      background: linear-gradient(to top, #bae6ff, #e3f2fd);
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      color: #0004ff;
+      margin-bottom: 10px;
+    }
+    .tablero {
+      display: flex;
+      justify-content: space-around;
+      margin: 20px auto;
+      max-width: 600px;
+    }
+    .columna {
+      display: flex;
+      flex-direction: column-reverse;
+    }
+    .celda {
+      width: 100px;
+      height: 70px;
+      border: 2px solid #587ad8;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      margin: 2px 0;
+    }
+    .jugador-img {
+      width: 46px;
+      object-fit: fill;
+    }
+    .corazon {
+      color: red;
+      font-size: 18px;
+    }
+    button {
+      margin: 5px;
+      padding: 10px 15px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      background-color: #1100ff;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #00c3ff;
+    }
+    .bolsa {
+      margin: 30px auto;
+      background: whitesmoke;
+      border-radius: 12px;
+      padding: 20px;
+      width: 80%;
+      max-width: 500px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .dados {
+      margin-top: 10px;
+    }
+    .dado {
+      display: inline-block;
+      padding: 10px 14px;
+      background: #0004ff;
+      margin: 0 5px;
+      border-radius: 50%;
+      font-size: 14px;
+      font-weight: bold;
+      color: white;
+    }
+    #registro {
+      background: #f3fdff;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 20px auto;
+      max-width: 600px;
+      color: #0092e6;
+      font-weight: bold;
+    }
+    .mensaje-final {
+      font-size: 1.8rem;
+      color: #1b5e20;
+      background: #e8f5e9;
+      border: 2px dashed #388e3c;
+      border-radius: 10px;
+      padding: 15px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>El Escondite Inglés</h1>
+  <div id="controles"></div>
+  <div class="tablero" id="tablero"></div>
+  <button onclick="turno()">Finalizar Turno</button>
+  <div class="bolsa">
+    <h3>Bolsa actual:</h3>
+    <div id="vistaBolsa" class="dados"></div>
+    <h3>Dados usados:</h3>
+    <div id="vistaUsados" class="dados"></div>
+  </div>
+  <p id="registro"></p>
+  <div id="ganador" class="mensaje-final" style="display:none;"></div>
+
+  <script>
+    let casillas = 10;
+    const jugadores = [
+      { nombre: 'A', pos: 0, corazon: false, eleccion: null, img: 'images/images-_5_-removebg-preview.png' },
+      { nombre: 'B', pos: 0, corazon: false, eleccion: null, img: 'images/227-96.png' },
+      { nombre: 'C', pos: 0, corazon: false, eleccion: null, img: 'images/bd5e0d7b96ac797.png' }
+    ];
+
+    let bolsa = ['negro1', 'negro2', 'negro3', 'rojo'];
+    let usados = new Set();
+
+    const dados = {
+      negro1: [1, 1, 1, 1, 2, 2],
+      negro2: [1, 1, 1, 1, 0, 0],
+      negro3: [1, 1, 0, 0, 0, 0],
+      rojo:   [1, 1, 1, 1, 1, 0]
+    };
+
+    function tirar(dado) {
+      const caras = dados[dado];
+      return caras[Math.floor(Math.random() * caras.length)];
+    }
+
+    function dibujarTablero() {
+      const tablero = document.getElementById('tablero');
+      tablero.innerHTML = '';
+      jugadores.forEach(j => {
+        const columna = document.createElement('div');
+        columna.className = 'columna';
+        for (let i = 0; i < casillas; i++) {
+          const celda = document.createElement('div');
+          celda.className = 'celda';
+          if (j.pos === i) {
+            celda.innerHTML = `<img src="${j.img}" class="jugador-img"> ${j.corazon ? '<span class="corazon">♥</span>' : ''}`;
+          }
+          columna.appendChild(celda);
+        }
+        tablero.appendChild(columna);
+      });
+    }
+
+    function dibujarControles() {
+  const controles = document.getElementById('controles');
+  controles.innerHTML = '';
+  jugadores.forEach(j => {
+    const div = document.createElement('div');
+    div.innerHTML = `Jugador ${j.nombre}: `;
+
+    ['andar', 'pararse'].forEach(op => {
+      const btn = document.createElement('button');
+      btn.innerText = op;
+
+      if (j.eleccion) {
+        btn.disabled = true;
+        if (j.eleccion === op) {
+          btn.style.backgroundColor = '#00c3ff';  
+        } else {
+          btn.style.opacity = 0.4; 
+        }
+      } else {
+        btn.onclick = () => {
+          j.eleccion = op;
+          dibujarControles();  
+        };
+      }
+
+      div.appendChild(btn);
+    });
+
+    controles.appendChild(div);
+  });
+}
+
+
+    function actualizarVistas() {
+      document.getElementById('vistaBolsa').innerHTML = bolsa.map(d => `<span class="dado">${d}</span>`).join('');
+      document.getElementById('vistaUsados').innerHTML = Array.from(usados).map(d => `<span class="dado">${d}</span>`).join('');
+    }
+
+    function sacarDado() {
+      const i = Math.floor(Math.random() * bolsa.length);
+      const d = bolsa.splice(i, 1)[0];
+      usados.add(d);
+
+      const negros = Array.from(usados).filter(d => d.includes('negro')).length;
+      if (usados.has('rojo') || negros === 3) {
+        bolsa = ['negro1', 'negro2', 'negro3', 'rojo'];
+        usados.clear();
+        casillas = Math.max(1, casillas - 1);
+      }
+      actualizarVistas();
+      return d;
+    }
+
+    function turno() {
+      const log = document.getElementById('registro');
+      log.innerHTML = '';
+      const mensaje = document.getElementById('ganador');
+      mensaje.style.display = 'none';
+
+      if (!jugadores.every(j => j.eleccion)) {
+        alert("Todos deben elegir antes de continuar.");
+        return;
+      }
+
+      const extraido = sacarDado();
+      log.innerHTML += `Dado extraído: ${extraido}<br>`;
+      const dadosTurno = Array.from(usados);
+
+      jugadores.forEach(j => {
+        if (j.eleccion === 'pararse' && extraido === 'rojo' && !j.corazon) {
+          j.corazon = true;
+          log.innerHTML += `Jugador ${j.nombre} gana un corazón<br>`;
+        } else if (j.eleccion === 'andar') {
+          let movimiento = dadosTurno.reduce((suma, d) => suma + tirar(d), 0);
+          if (extraido === 'rojo') {
+            if (j.corazon) {
+              j.corazon = false;
+              log.innerHTML += `Jugador ${j.nombre} pierde el corazón<br>`;
+            } else {
+              j.pos = Math.max(0, j.pos - movimiento);
+              log.innerHTML += `⬇ ${j.nombre} retrocede ${movimiento}<br>`;
+            }
+          } else {
+            j.pos += movimiento;
+            log.innerHTML += `⬆ ${j.nombre} avanza ${movimiento}<br>`;
+          }
+        }
+        j.eleccion = null;
+      });
+
+      dibujarTablero();
+      dibujarControles();
+
+      const ganadores = jugadores.filter(j => j.pos >= casillas - 1);
+      if (ganadores.length > 0) {
+        mensaje.style.display = 'block';
+        mensaje.innerHTML = `¡Ganador(es)!: ${ganadores.map(j => j.nombre).join(', ')}`;
+      }
+    }
+
+    dibujarTablero();
+    dibujarControles();
+    actualizarVistas();
+  </script>
+</body>
+</html>
